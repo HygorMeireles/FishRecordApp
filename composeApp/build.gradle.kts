@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.serialization)
 }
 
 kotlin {
@@ -29,10 +30,13 @@ kotlin {
     }
     
     sourceSets {
-        
+
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.koin.android)
+            implementation(libs.ktor.client.android)
+            implementation(libs.ktor.client.okhttp)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -43,6 +47,24 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation(libs.androidx.navigation.compose)
+            implementation(libs.kotlinx.serialization)
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
+            implementation(libs.toast.sonner)
+            implementation(libs.androidx.core.i18n)
+            implementation(libs.skiko)
+            implementation(libs.coil.compose)
+            implementation(libs.kotlinx.datetime)
+            implementation(libs.coil.network.ktor2)
+            implementation(libs.coil.network.ktor3)
+            implementation(libs.peekaboo.image.picker)
+            implementation(libs.ktor.client.core)
+        }
+
+        appleMain.dependencies {
+            implementation(libs.ktor.client.darwin)
         }
     }
 }
