@@ -5,15 +5,13 @@ import androidx.lifecycle.viewModelScope
 import br.com.fishrecord.common.manager.SessionManager
 import br.com.fishrecord.common.result.ResponseResult
 import br.com.fishrecord.impl.data.datasource.model.User
-import br.com.fishrecord.impl.data.repository.FishRecordRepository
-import br.com.fishrecord.impl.domain.usecase.DoLoginUseCase
-import br.com.fishrecord.impl.domain.usecase.DoLoginUseCaseParams
+import br.com.fishrecord.impl.data.datasource.remote.FishRecordDataSource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val doLoginUseCase: DoLoginUseCase
+    private val dataSource: FishRecordDataSource
 ): ViewModel() {
 
     private val _loginState: MutableStateFlow<LoginViewState> = MutableStateFlow(LoginViewState.Initial)
@@ -22,7 +20,7 @@ class LoginViewModel(
     fun login(login: String, password: String) {
         _loginState.tryEmit(LoginViewState.Loading)
         viewModelScope.launch {
-            when (val result = doLoginUseCase.invoke(DoLoginUseCaseParams(login, password))) {
+            when (val result = dataSource.doLogin(login, password)) {
                 is ResponseResult.Success -> result.data.run {
                     SessionManager.user = this
                     _loginState.tryEmit(
